@@ -16,9 +16,10 @@ class UserProfileManager(BaseUserManager):
 
         return user
 
-    def create_super_user(self, email, name, password=None):
+    def create_superuser(self, email, name, password=None):
         user = self.create_user(email, name, password)
-        user.is_admin = True
+        user.is_staff = True
+        user.is_superuser = True
         user.save()
 
         return user
@@ -28,7 +29,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
 
     objects = UserProfileManager()
 
