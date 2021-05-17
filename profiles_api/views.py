@@ -2,12 +2,12 @@ from .serializers import HelloSerializer
 from rest_framework import status, viewsets, serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from static.Api import api
 
 
 class HelloApiView(APIView):
     serializer = HelloSerializer
     code = 200
-    message = "success"
 
     def get(self, request):
         api = ['GET', 'POST', 'PATCH', 'DELETE']
@@ -20,52 +20,56 @@ class HelloApiView(APIView):
             name = serial.validated_data.get('name')
             data = f'Hello {name}'
         else:
-            self.message = 'error'
             self.code = status.HTTP_400_BAD_REQUEST
             data = serial.errors
 
-        return Response({'code': self.code, 'message': self.message, 'data': data})
+        return api(self.code, data)
 
     def put(self, request, pk=None):
-        return Response({'code': self.code, 'message': self.message, 'data': 'PUT'})
+        data = "PUT"
+        return api(self.code, data)
 
     def patch(self, request, pk=None):
-        return Response({'code': self.code, 'message': self.message, 'data': 'PATCH'})
+        data = "PATCH"
+        return api(self.code, data)
 
     def delete(self, request, pk=None):
-        return Response({'code': self.code, 'message': self.message, 'data': 'DELETE'})
+        data = "DELETE"
+        return api(self.code, data)
 
 
 class HelloViewSet(viewsets.ViewSet):
     code = 200
-    message = "success"
     serializer_class = HelloSerializer
 
     def list(self, request):
-        view = ['Hello', 'World']
-        return Response({'code': self.code, 'message': self.message, 'data': view})
+        data = ['Hello', 'World']
+        return api(self.code, data)
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
             name = serializer.validated_data.get('name')
-            message = f'Hello {name}'
+            data = f'Hello {name}'
         else:
-            self.message = 'error'
             self.code = status.HTTP_400_BAD_REQUEST
-            message = serializer.errors
+            data = serializer.errors
 
-        return Response({'code': self.code, 'message': self.message, 'data': message})
+        return api(self.code, data)
 
     def retrieve(self, request, pk=None):
-        return Response({'code': self.code, 'message': self.message, 'data': 'GET'})
+        data = "GET"
+        return api(self.code, data)
 
     def update(self, request, pk=None):
-        return Response({'code': self.code, 'message': self.message, 'data': 'PUT'})
+        data = "PUT"
+        return api(self.code, data)
 
     def partial_update(self, request, pk=None):
-        return Response({'code': self.code, 'message': self.message, 'data': 'PATCH'})
+        data = "PATCH"
+        return api(self.code, data)
 
     def destroy(self, request, pk=None):
-        return Response({'code': self.code, 'message': self.message, 'data': 'DELETE'})
+        data = "DELETE"
+        return api(self.code, data)
