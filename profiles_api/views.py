@@ -2,7 +2,7 @@ from .serializers import HelloSerializer
 from rest_framework import status, viewsets, serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from static.Api import api
+from helper.Api import api
 
 
 class HelloApiView(APIView):
